@@ -36,6 +36,8 @@ const ParticleCanvas = forwardRef(function ParticleCanvas(
     typeof window !== "undefined" && window.innerWidth < 768 ? 60 : 120,
   );
 
+  const dprRef = useRef(1);
+
   /* ── drawing helpers ── */
   const drawHeart = useCallback((ctx, x, y, size, color, alpha) => {
     ctx.save();
@@ -98,14 +100,19 @@ const ParticleCanvas = forwardRef(function ParticleCanvas(
       }
 
       /* ── update & draw ── */
+      const dpr = dprRef.current;
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.scale(dpr, dpr);
+
       const parts = particlesRef.current;
 
       for (let i = parts.length - 1; i >= 0; i--) {
         const p = parts[i];
         p.x += p.vx * dt * 60;
         p.y += p.vy * dt * 60;
-        p.vy += p.gravity;
+        p.vy += p.gravity * dt * 60;
         p.life -= dt;
         p.alpha = Math.max(0, (p.life / p.totalLife) * p.initAlpha);
 
@@ -120,6 +127,8 @@ const ParticleCanvas = forwardRef(function ParticleCanvas(
           drawDot(ctx, p.x, p.y, p.size, p.color, p.alpha);
         }
       }
+
+      ctx.restore();
 
       if (parts.length > 0) {
         rafRef.current = requestAnimationFrame(tick);
@@ -209,8 +218,11 @@ const ParticleCanvas = forwardRef(function ParticleCanvas(
     if (!canvas) return;
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dprRef.current = dpr;
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+      maxParticlesRef.current = window.innerWidth < 768 ? 60 : 120;
     };
     resize();
     window.addEventListener("resize", resize);

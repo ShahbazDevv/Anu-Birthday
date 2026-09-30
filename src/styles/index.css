@@ -45,3 +45,12 @@ body {
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
 }
+
+/* ── Hide scrollbar utility ── */
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -5,32 +5,34 @@
 
 export const copy = {
   /* Age numbers used in the intro */
-  age: { from: 23, to: 24 },
+  age: { from: 22, to: 23 },
 
   /* Scene 0 — Intro text after the zoom */
   intro: {
-    line1: "Today is my princess's birthday",
-    line2: "Today belongs to her",
+    line1: "A Little something for you ❤️",
+    line2: "Stay Tuned!",
   },
 
   /* Scene 1 — small overlay above the heart */
-  heartOverlay: "This is my princess day",
+  heartOverlay: "This is my Sweetie day 😍",
 
   /* Scene 3 — Birthday reveal (exact strings, three lines) */
   reveal: {
     line1: "HAPPY BIRTHDAY",
-    line2: "TO MY BEAUTIFUL",
-    line3: "PRINCESS",
+    line2: " Doctor",
+    line3: " Anosha 🤍",
   },
 
   /* Start gate */
-  startGate: "Tap to begin",
+  startGate: "Tap to Special 👀",
 
   /* Continue button (appears after Scene 3) */
   continueButton: "Continue",
 
   /* Scene 4 — Gallery */
   gallery: {
+    title: "Memories",
+    subtitle: "Every moment with you is special",
     next: "Next",
   },
 

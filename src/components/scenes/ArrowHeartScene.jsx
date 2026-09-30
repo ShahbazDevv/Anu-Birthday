@@ -61,9 +61,10 @@ export default function ArrowHeartScene({ onComplete, particleRef }) {
           { opacity: 1, duration: 0.6 },
           0.3,
         );
-        tl.to(textRef.current, { opacity: 0, duration: 0.5 }, 1.5);
+        tl.to(textRef.current, { opacity: 0, duration: 0.5 }, 1.3);
+        tl.set(textRef.current, { display: "none" }, 1.8);
         tl.to(heartWrapRef.current, { opacity: 0, duration: 0.6 }, 2.5);
-        tl.to(containerRef.current, { opacity: 0, duration: 0.8 }, 3.0);
+        tl.to(containerRef.current, { opacity: 0, duration: 0.8 }, 3.2);
         return;
       }
 
@@ -92,12 +93,13 @@ export default function ArrowHeartScene({ onComplete, particleRef }) {
         0.3,
       );
 
-      /* 1.0 s — text fades out (fully gone before 1.8 s) */
+      /* 1.0 s — text fades out (fully gone by 1.8 s) */
       tl.to(
         textRef.current,
         { opacity: 0, duration: 0.8, ease: "power2.in" },
         1.0,
       );
+      tl.set(textRef.current, { display: "none" }, 1.8);
 
       /* 0.8 s — arrow enters */
       tl.set(arrowWrapRef.current, { opacity: 1 }, 0.8);
@@ -105,7 +107,7 @@ export default function ArrowHeartScene({ onComplete, particleRef }) {
       /* x: accelerating flight from left */
       tl.fromTo(
         arrowWrapRef.current,
-        { x: -window.innerWidth * 0.8 },
+        { x: -window.innerWidth * 0.75 },
         { x: 0, duration: 1.4, ease: "power3.in" },
         0.8,
       );
@@ -135,9 +137,9 @@ export default function ArrowHeartScene({ onComplete, particleRef }) {
       );
       tl.set(heartInnerRef.current, { scale: 1 }, hit);
 
-      /* 60 ms freeze (dead time in timeline) */
+      /* 60 ms freeze (2.20 s - 2.26 s) */
 
-      /* heart shake */
+      /* 2.26 s — heart shake */
       tl.to(
         heartInnerRef.current,
         {
@@ -150,7 +152,7 @@ export default function ArrowHeartScene({ onComplete, particleRef }) {
         hit + 0.06,
       );
 
-      /* white flash at 30 % */
+      /* 2.26 s — white flash at 30 % */
       tl.fromTo(
         flashRef.current,
         { opacity: 0 },
@@ -158,7 +160,7 @@ export default function ArrowHeartScene({ onComplete, particleRef }) {
         hit + 0.06,
       );
 
-      /* ── ~2.4 s — BURST ── */
+      /* ── ~2.44 s — BURST ── */
       const burst = hit + 0.24;
 
       /* shrink + hide heart */
@@ -179,7 +181,7 @@ export default function ArrowHeartScene({ onComplete, particleRef }) {
             y: rect.top + rect.height / 2,
             count: isMobile ? 60 : 120,
             spread: 40,
-            speed: 4,
+            speed: 4.5,
             gravity: 0.12,
             types: ["heart", "dot"],
             colors: ["#FF6FA5", "#FF2E7E", "#FFE4EC", "#ffffff"],
@@ -194,7 +196,7 @@ export default function ArrowHeartScene({ onComplete, particleRef }) {
       /* 4.8 s — fade out the scene bg (particles live on shared canvas above) */
       tl.to(
         containerRef.current,
-        { opacity: 0, duration: 0.8, ease: "power2.in" },
+        { opacity: 0, duration: 0.8, ease: "power2.inOut" },
         4.8,
       );
     }, containerRef);
@@ -241,17 +243,19 @@ export default function ArrowHeartScene({ onComplete, particleRef }) {
         </div>
       </div>
 
-      {/* ── Arrow (positioned so its tip lands at heart center) ── */}
+      {/* ── Arrow (positioned so its tip lands at exact heart center at x:0, y:0) ── */}
       <div
-        className="absolute inset-0 flex items-center justify-center pointer-events-none"
+        ref={arrowWrapRef}
+        className="absolute left-1/2 top-1/2 pointer-events-none"
+        style={{ opacity: 0 }}
       >
-        <div
-          ref={arrowWrapRef}
-          style={{ opacity: 0, marginLeft: "clamp(-10rem, -20vw, -6rem)" }}
-        >
+        <div style={{ transform: "translate(-98.75%, -50%)" }}>
           <Arrow
             className="text-rose"
-            style={{ width: "clamp(6rem, 20vw, 10rem)" }}
+            style={{
+              width: "clamp(6rem, 20vw, 10rem)",
+              filter: "drop-shadow(0 0 12px rgba(255,111,165,0.4))",
+            }}
           />
         </div>
       </div>
